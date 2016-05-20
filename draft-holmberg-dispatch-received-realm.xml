@@ -4,7 +4,7 @@
 <?rfc toc="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc sortrefs="no" ?>
-<rfc ipr="trust200902" category="std" docName="draft-holmberg-dispatch-received-realm-01.txt" submissionType="IETF" xml:lang="en">
+<rfc ipr="trust200902" category="std" docName="draft-holmberg-dispatch-received-realm-02.txt" submissionType="IETF" xml:lang="en">
 	<front>
 		<title abbrev="received realm">
 			Via header field parameter to indicate received realm
@@ -21,7 +21,7 @@
 				<email>christer.holmberg@ericsson.com</email>
 			</address>
 		</author>
-		<author initials="J.Y." surname="Jiang" fullname="Yi Jiang "> 
+		<author initials="J.Y." surname="Jiang" fullname="Yi Jiang ">
 			<organization>China Mobile</organization>
 			<address>
 				<postal>
@@ -60,7 +60,7 @@
 				</t>
 				<t>
 					Such transit networks might provide different kind of services. In order
-					to do that, a transit network often needs to know to which operator 
+					to do that, a transit network often needs to know to which operator
 					(or enterprise) the adjacent upstream network, from which the SIP session
 					initiation request is received, belongs.
 				</t>
@@ -72,8 +72,8 @@
 					with the adjacent network.
 				</t>
 				<t>
-					NOTE: As the adjacent network can be an enterprise network, an Inter Operator 
-					Identifier (IOI) cannot be used to identity the network, as IOIs are not 
+					NOTE: As the adjacent network can be an enterprise network, an Inter Operator
+					Identifier (IOI) cannot be used to identity the network, as IOIs are not
 					defined for enterprise networks.
 				</t>
 				<t>
@@ -82,24 +82,24 @@
 			</section>
 			<section title="Use-Case: Transit Network Application Services" toc="default">
 				<t>
-					The 3rd Generation Partnership Project (3GPP) TS 23.228 specifies how an IP Multimedia Subsystem (IMS) 
+					The 3rd Generation Partnership Project (3GPP) TS 23.228 specifies how an IP Multimedia Subsystem (IMS)
 					network can be used to provide transit functionality. An operator can use its IMS
 					network to provide transit functionality e.g. to non-IMS customers, to enterprise
 					networks, and to other network operators.
 				</t>
 				<t>
 					The transit network operator can provide application services to the networks
-					for which it is providing transit functionality. Transit application services are 
-					typically not provided per user basis, as the transit network does not have access 
-					to the user profiles of the networks for which the application services are provided. 
-					Instead, the application services are provided per served network. 
+					for which it is providing transit functionality. Transit application services are
+					typically not provided per user basis, as the transit network does not have access
+					to the user profiles of the networks for which the application services are provided.
+					Instead, the application services are provided per served network.
 				</t>
-				<t>				
-					When a SIP entity that provides application services (e.g. an Application Server) 
-					within a transit network receives a SIP request, in order to apply the correct 
-					services it needs to know the adjacent upstream network from which the SIP request 
-					is received.					
-				</t>			
+				<t>
+					When a SIP entity that provides application services (e.g. an Application Server)
+					within a transit network receives a SIP request, in order to apply the correct
+					services it needs to know the adjacent upstream network from which the SIP request
+					is received.
+				</t>
 			</section>
 			<section title="Use-Case: Transit Network Routing" toc="default">
 				<t>
@@ -107,23 +107,23 @@
    					operators, including other transit network operators, and provides
    					transit routing of SIP requests received from one operator network
    					towards the destination. The destination can be within an operator network
-   					to which the transit network operator has a direct interconnect, or 
-					within an operator network that only can be reached via one or more 
-   					interconnected transit operators. 
+   					to which the transit network operator has a direct interconnect, or
+					within an operator network that only can be reached via one or more
+   					interconnected transit operators.
 				</t>
-				<t>				
-   					For each customer, i.e. interconnected network operator for which, 
+				<t>
+   					For each customer, i.e. interconnected network operator for which,
    					the transit network operator routes SIP requests towards the
    					requested destination a set of transit routing polices are defined.
-   					These policies are used to determine how a SIP request shall be routed 
+   					These policies are used to determine how a SIP request shall be routed
    					towards the requested destination to meet the agreement the transit
    					network operator has with its customer.
 				</t>
-				<t>				 
+				<t>
    					When a SIP entity that performs the transit routing functionality
    					receives a SIP request, in order to apply the correct set of transit
-   					routing policies, it needs to know from which of its 
-   					customers, i.e. adjacent upstream network, the SIP request is 
+   					routing policies, it needs to know from which of its
+   					customers, i.e. adjacent upstream network, the SIP request is
    					received.
 				</t>
 			</section>
@@ -139,31 +139,127 @@
 				received is outside the scope of this specification.
 			</t>
 		</section>
-		
+
 		<section title="Conventions" toc="default">
 			<t>
-				The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", 
-				"RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in 
+				The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT",
+				"RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in
 				BCP 14, RFC 2119 <xref target="RFC2119" pageno="false" format="default" />.
 			</t>
 		</section>
-		
+
 		<section title="Definitions" toc="default">
 			<t>
 				SIP entity: SIP User Agent (UA), or SIP proxy, as defined in RFC 3261.
 			</t>
 			<t>
-				Adjacent upstream SIP network: The adjacent SIP network in the direction 
+				Adjacent upstream SIP network: The adjacent SIP network in the direction
 				from which a SIP request is received.
-			</t>						
+			</t>
 			<t>
 				Network entry point: A SIP entity on the border of network, which receives SIP requests
 				from adjacent upstream networks.
 			</t>
 			<t>
-				Inter Operator Identifier (IOI): A globally unique identifier to correlate billing 
-				information generated within the IP Multimedia Subsystem (IMS).			
+				Inter Operator Identifier (IOI): A globally unique identifier to correlate billing
+				information generated within the IP Multimedia Subsystem (IMS).
 			</t>
+			<t>
+				JWT: JSON Web Token, as defined in RFC 7519.
+			</t>
+		</section>
+
+		<section title="Vie 'received-realm' header field parameter" anchor="sec-via" toc="default">
+			<section title="General" anchor="sec-via-gen">
+        <t>
+						The Via 'received-realm' header field parameter value is represented as a JSON Web Token (JTW)
+						<xref target="RFC7519" pageno="false" format="default"/>. The JWT payload contains
+						SIP header filed values, and the value representing the adjacent network.
+				</t>
+				<t>
+						The procedures for encoding the JWT and calculating the signature are defined in
+						<xref target="RFC7519" pageno="false" format="default"/>.
+				</t>
+			</section>
+			<section title="Header" anchor="sec-via-header">
+					<t>The following header parameters MUST be included in the JWT.
+							<list style="symbols">
+									<t>The "typ" parameter MUST have a "JWT" value.</t>
+									<t>The "alg" parameter MUST have the value of the algorithm used to calculate the JWT signature.</t>
+							</list>
+					</t>
+					<t>
+						NOTE: Operators need to agree on the set of supported algorithms for calculating the JWT signature.
+					</t>
+					<figure>
+			    <artwork align="left" alt="" height="" name="" type="" width="" xml:space="preserve"><![CDATA[
+
+Example:
+
+{
+	"typ":"JWT",
+	"alg":"HS256"
+}
+
+			    ]]></artwork>
+	        </figure>
+				</section>
+				<section title="Payload claims" anchor="sec-via-payload">
+					<t>The follwoing payload claims MUST be included in the JWT.
+						<list style="symbols">
+            <t> The "adjacent_network" claim has the value representing the adjacent network.</t>
+						<t> The "sip_from_tag" claim has the value of the From 'tag' header field parameter of the SIP message.</t>
+						<t> The "sip_date" claim has the value of the Date header field in the SIP message.</t>
+						<t> The "sip_callid" claim has have value of the Call-ID header field in the SIP message.</t>
+						<t> The "sip_cseq_num" claim has the numeric value of the CSeq header field in the SIP message.</t>
+						<t> the "sip_via_branch" claim has value of the Via branch header field parameter of the Via header
+					  field, in the SIP message, to which the received-realm header parameter is attached.</t>
+					  </list>
+					</t>
+					<figure>
+			    <artwork align="left" alt="" height="" name="" type="" width="" xml:space="preserve"><![CDATA[
+
+Example:
+
+{
+	"adjacent_network":"operator_1.com",
+	"sip_from_tag":"1928301774",
+	"sip_date":"Fri, 20 May 2016 06:41:47 GMT",
+	"sip_callid":"a84b4c76e66710@pc33.atlanta.com",
+	"sip_cseq_num":"314159",
+	"sip_via_branch":"z9hG4bK776asdhds"
+}
+
+			    ]]></artwork>
+	        </figure>
+			</section>
+			<section title="Syntax" anchor="sec-syntax" toc="default">
+				<section title="General" anchor="sec-syntax-gen" toc="default">
+					<t>
+						This section describes the syntax extensions to the ABNF syntax defined in
+						<xref target="RFC3261" pageno="false" format="default"/>, by defining a
+						new Via header field parameter, "received-realm".  The ABNF defined in this
+						specification is conformant to RFC 5234 <xref target="RFC5234" pageno="false"
+						format="default"/>. "EQUAL", "LDQUOT", "RDQUOT" and "ALPHA" are defined in
+						<xref target="RFC3261" pageno="false" format="default"/>. "DIGIT" is defined in
+						<xref target="RFC5234" pageno="false" format="default"/>.
+					</t>
+				</section>
+				<section title="ABNF" anchor="sec-syntax-abnf" toc="default">
+					<figure>
+						<preamble></preamble>
+						<artwork><![CDATA[
+	via-params     =/ received-realm
+	received-realm = "received-realm" EQUAL jwt
+	jtw            = LDQUOT header "." payload "." signature RDQUOT
+	header         = *base64-char
+	payload        = *base64-char
+	signature      = *base64-char
+	base64-char    = ALPHA / DIGIT / "/" / "+"
+						]]></artwork>
+					</figure>
+				</section>
+			</section>
 		</section>
 
 		<section title="User Agent and Proxy behavior" anchor="sec-sipent" toc="default">
@@ -172,43 +268,57 @@
 					This section describes how a SIP entity, acting as an entry point to
 					a network, uses the "received-realm" Via header field parameter.
 				</t>
-			</section>			
+			</section>
 
 			<section title="Behavior of a SIP entity acting as a network entry point" anchor="sec-sipent-recv" toc="default">
 				<t>
 					When a SIP entity, acting as a network entry point, forwards a SIP request, or initiates a SIP request
 					on its own (e.g. a PSTN gateway), the SIP entity adds a Via header field to the SIP request, according
-					to the procedures in RFC 3261 <xref target="RFC3261" pageno="false" format="default" />. In addition, if 
-					the SIP entity is able to assert the adjacent upstream network, and if the SIP entity is aware of a network 
+					to the procedures in RFC 3261 <xref target="RFC3261" pageno="false" format="default" />. In addition, if
+					the SIP entity is able to assert the adjacent upstream network, and if the SIP entity is aware of a network
 					realm value defined for that network, the SIP entity can add a "received-realm" Via header field parameter,
 					conveying the network realm value, to the Via header field added to the SIP request.
 				</t>
 				<t>
 					When the SIP entity adds a "received-realm" Via header field parameter to a SIP request, it MUST also calculate
-					a Hash-based message authentication code (HMAC) <xref target="RFC2104" pageno="false" format="default"/> value 
-					from the parameter value, using a secret key which is shared between the SIP entity and any SIP entity which 
+					a Hash-based message authentication code (HMAC) <xref target="RFC2104" pageno="false" format="default"/> value
+					from the parameter value, using a secret key which is shared between the SIP entity and any SIP entity which
 					will use the parameter value. The HMAC is then added to the parameter.
+				</t>
+				<t>
+					When the receiver decodes the JWT, it MUST compare the JWT claims with the corresponding SIP header field information. If there is a mismatch, the receiver MUST discard the received-realm header field parameter.
+        </t>
+			</section>
+			<section title="Behavior of a SIP entity consuming the received-network value" anchor="sec-sipent-cons" toc="default">
+				<t>
+					When a SIP entity receives a Via 'received-network' header field parameter, and intends to perform actions
+					based on the header field parameter value, it MUST first check whether the values of the JWT claims
+					representing SIP header field values match the associated SIP header field values within the SIP request.
+					If the values of the JWT claims representing SIP header field values do not match the values of the
+					associated SIP header field values the SIP entity MUST discard the adjacent network information present
+					in the JWT. The SIP entity MAY take also take additional actions (e.g. rejecting the SIP request) based on
+					local policy.
 				</t>
 			</section>
 		</section>
-																
+
     	<section title="Example" toc="default">
 			<figure>
 				<preamble></preamble>
 				<artwork><![CDATA[
 
 Operator 1    T_EP                                 T_AS
-		
+
 - INVITE ------>
-  Via: IP_UA		
+  Via: IP_UA
                 - INVITE ---------------------------->
-                  Via: IP_TEP; received-realm=operator_1.com:<hmac>
-				  Via: IP_UA; received=IP_UA
-		           
+                  Via: IP_TEP; received-realm="eyJhbG.eyJpc3.03f329"
+				          Via: IP_UA; received=IP_UA
+
                 <- 200 OK ----------------------------
-                   Via: IP_TEP; received-realm=operator_1.com:<hmac>
+                   Via: IP_TEP; received-realm="eyJhbG.eyJpc3.03f329"
                    Via: IP_UA; received=IP_UA
-				   
+
 <- 200 OK------
    Via: IP_UA; received=IP_UA
 
@@ -216,39 +326,13 @@ Operator 1    T_EP                                 T_AS
 			</figure>
 		</section>
 
-		<section title="Syntax" anchor="sec-syntax" toc="default">
-			<section title="General" anchor="sec-syntax-gen" toc="default">
-				<t>
-					This section describes the syntax extensions to the ABNF syntax defined in 
-					RFC 3261 <xref target="RFC3261" pageno="false" format="default"/>, by defining a 
-					new Via header field parameter, "received-realm".  The ABNF defined in this 
-					specification is conformant to RFC 5234 <xref target="RFC5234" pageno="false" 
-					format="default"/>. "EQUAL", "COLON" and "hostname" are defined in RFC 3261 
-					<xref target="RFC3261" pageno="false" format="default"/>. "DIGIT" is defined in 
-					RFC 5234 <xref target="RFC5234" pageno="false" format="default"/>
-				</t>
-			</section>
-			<section title="ABNF" anchor="sec-syntax-abnf" toc="default">
-				<figure>
-					<preamble></preamble>
-					<artwork><![CDATA[
-via-params =/ received-realm
-
-received-realm = "received-realm" EQUAL hostname COLON hmac
-
-hmac = TBD				
-					]]></artwork>
-				</figure>
-			</section>
-		</section>
-	    
-		<section title="IANA Considerations" toc="default">
-			<section title="'received-realm' Via header field parameter" anchor="sec-uri-param" toc="default">
+		<section title="IANA Considerations" anchor="iana" toc="default">
+			<section title="'received-realm' Via header field parameter" anchor="iana-param" toc="default">
 				<t>
 					This specification defines a new Via header field parameter
 					called received-realm in the "Header Field Parameters and Parameter Values"
-					sub-registry as per the registry created by <xref target="RFC3968" 
-					pageno="false" format="default"/>. The syntax is defined in 
+					sub-registry as per the registry created by <xref target="RFC3968"
+					pageno="false" format="default"/>. The syntax is defined in
 					<xref target="sec-syntax"/>. The required information is:
 				</t>
 				<figure>
@@ -262,9 +346,42 @@ Via                     received-realm         No          RFCXXXX
 					]]></artwork>
 				</figure>
 			</section>
-    	</section>
+			<section title="JSON Web Token Claims Registration" anchor="iana-claims" toc="default">
+				<t>
+					This specification defines new JSON Web Token claims in
+					the "JSON Web Token Claims" sub-registry as per the registry
+					created by <xref target="RFC7519" pageno="false" format="default"/>.
+					<list style="symbols">
+					 <t> Claim Name: "adjacent_network"</t>
+					 <t> Claim Descritpoin: Adjacent network from where a SIP request is received</t>
+					 <t> Change Controller: IESG</t>
+					 <t> Specification Document(s): RFC XXXX</t>
+					 <t> Claim Name: "sip_from_tag"</t>
+					 <t> Claim Descritpoin: SIP From tag header field parameter value</t>
+					 <t> Change Controller: IESG</t>
+					 <t> Specification Document(s): RFC XXXX, RFC 3261</t>
+					 <t> Claim Name: "sip_date"</t>
+					 <t> Claim Descritpoin: SIP Date header field value</t>
+					 <t> Change Controller: IESG</t>
+					 <t> Specification Document(s): RFC XXXX, RFC 3261</t>
+					 <t> Claim Name: "sip_callid"</t>
+					 <t> Claim Descritpoin: SIP Call-Id header field value</t>
+					 <t> Change Controller: IESG</t>
+					 <t> Specification Document(s): RFC XXXX, RFC 3261</t>
+					 <t> Claim Name: "sip_cseq_num"</t>
+					 <t> Claim Descritpoin: SIP CSeq numeric header field parameter value</t>
+					 <t> Change Controller: IESG</t>
+					 <t> Specification Document(s): RFC XXXX, RFC 3261</t>
+					 <t> Claim Name: "sip_via_branch"</t>
+					 <t> Claim Descritpoin: SIP Via branch header field parameter value</t>
+					 <t> Change Controller: IESG</t>
+					 <t> Specification Document(s): RFC XXXX, RFC 3261</t>
+					</list>
+				</t>
+			</section>
+  </section>
 
-    	<section title="Security Considerations" anchor="sec-security" toc="default">
+  <section title="Security Considerations" anchor="sec-security" toc="default">
 			<t>
 				As the received-realm Via header field parameter can be used
 				to trigger applications, it is important to ensure that the parameter
@@ -273,30 +390,36 @@ Via                     received-realm         No          RFCXXXX
 			<t>
 				The operator MUST change the key on a frequent basis.
 				The operator also needs to take great care in ensuring that the key used
-				to calculate the Hash-based message authentication code (HMAC) value is 
-				only known by the network entry point adding the received-realm Via 
-				header field parameter to a SIP message and the entities that use the 
-				parameter value.
+				to calculate the JWT signature value is only known by the network entry
+				point adding the received-realm Via header field parameter to a SIP message
+				and the entities that use the parameter value.
 			</t>
 			<t>
-				A SIP entity MUST NOT use the parameter value it does not match the
-				associated HMAC value. The SIP entity MUST trigger an alarm, or use
-				a similar mechanism, to inform the operator about the mismatch.
+				A SIP entity MUST NOT use the adjacent network information if the
+				values of the JWT claims representing SIP header field values do not
+				match the values of the associated SIP header field values.
 			</t>
 			<t>
 				A SIP entity MUST use different key values for each parameter value
 				that it recognizes and use to trigger actions.
 			</t>
-		</section>
-		
-		<section title="Acknowledgements" anchor="sec-acks" toc="default">
+	</section>
+
+	<section title="Acknowledgements" anchor="sec-acks" toc="default">
 			<t>
-				TBD
+				Thanks to Adam Roach and Richard Barnes for providing comments and
+				feedback on the document.
 			</t>
-		</section>
-		
-		<section title="Change Log">
+	</section>
+
+	<section title="Change Log">
 			<t>[RFC EDITOR NOTE: Please remove this section when publishing]</t>
+			<t>
+				Changes from draft-holmberg-dispatch-received-realm-01
+				<list style="symbols">
+					<t>Define received-realm parameter value as a JSON Web Token (JWT).</t>
+				</list>
+			</t>
 			<t>
 				Changes from draft-holmberg-dispatch-received-realm-00
 				<list style="symbols">
@@ -334,17 +457,18 @@ Via                     received-realm         No          RFCXXXX
 					<t>New version due to expiration.</t>
 				</list>
 			</t>
-		</section>		
-	</middle>	
+	</section>
+	</middle>
 	<back>
 		<references title="Normative References">
-			<?rfc include="reference.RFC.2119"?>			
+			<?rfc include="reference.RFC.2119"?>
 			<?rfc include="reference.RFC.3261"?>
-			<?rfc include="reference.RFC.5234"?>			
+			<?rfc include="reference.RFC.5234"?>
+			<?rfc include="reference.RFC.7519"?>
 		</references>
-		<references title="Informative References">	
-			<?rfc include="reference.RFC.2104"?>		
-			<?rfc include="reference.RFC.3968"?>			
+		<references title="Informative References">
+			<?rfc include="reference.RFC.2104"?>
+			<?rfc include="reference.RFC.3968"?>
 		</references>
 	</back>
 </rfc>
