@@ -5,8 +5,8 @@
 SIPCORE Working Group                                        C. Holmberg
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                                J. Jiang
-Expires: November 21, 2016                                  China Mobile
-                                                                    2015
+Expires: November 26, 2016                                  China Mobile
+                                                            May 25, 2016
 
 
          Via header field parameter to indicate received realm
@@ -35,11 +35,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 21, 2016.
+   This Internet-Draft will expire on November 26, 2016.
 
 Copyright Notice
 
-   Copyright (c) 2015 IETF Trust and the persons identified as the
+   Copyright (c) 2016 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Holmberg & Jiang        Expires November 21, 2016               [Page 1]
+Holmberg & Jiang        Expires November 26, 2016               [Page 1]
 
-Internet-Draft               received realm                         2015
+Internet-Draft               received realm                     May 2016
 
 
    the Trust Legal Provisions and are provided without warranty as
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Holmberg & Jiang        Expires November 21, 2016               [Page 2]
+Holmberg & Jiang        Expires November 26, 2016               [Page 2]
 
-Internet-Draft               received realm                         2015
+Internet-Draft               received realm                     May 2016
 
 
    operator (or enterprise) the adjacent upstream network, from which
@@ -165,9 +165,9 @@ Internet-Draft               received realm                         2015
 
 
 
-Holmberg & Jiang        Expires November 21, 2016               [Page 3]
+Holmberg & Jiang        Expires November 26, 2016               [Page 3]
 
-Internet-Draft               received realm                         2015
+Internet-Draft               received realm                     May 2016
 
 
    requested destination a set of transit routing polices are defined.
@@ -221,9 +221,9 @@ Internet-Draft               received realm                         2015
 
 
 
-Holmberg & Jiang        Expires November 21, 2016               [Page 4]
+Holmberg & Jiang        Expires November 26, 2016               [Page 4]
 
-Internet-Draft               received realm                         2015
+Internet-Draft               received realm                     May 2016
 
 
 5.1.  General
@@ -277,9 +277,9 @@ Internet-Draft               received realm                         2015
 
 
 
-Holmberg & Jiang        Expires November 21, 2016               [Page 5]
+Holmberg & Jiang        Expires November 26, 2016               [Page 5]
 
-Internet-Draft               received realm                         2015
+Internet-Draft               received realm                     May 2016
 
 
    o  the "sip_via_branch" claim has value of the Via branch header
@@ -333,9 +333,9 @@ Internet-Draft               received realm                         2015
 
 
 
-Holmberg & Jiang        Expires November 21, 2016               [Page 6]
+Holmberg & Jiang        Expires November 26, 2016               [Page 6]
 
-Internet-Draft               received realm                         2015
+Internet-Draft               received realm                     May 2016
 
 
 6.2.  Behavior of a SIP entity acting as a network entry point
@@ -389,9 +389,9 @@ Internet-Draft               received realm                         2015
 
 
 
-Holmberg & Jiang        Expires November 21, 2016               [Page 7]
+Holmberg & Jiang        Expires November 26, 2016               [Page 7]
 
-Internet-Draft               received realm                         2015
+Internet-Draft               received realm                     May 2016
 
 
    Operator 1    T_EP                                 T_AS
@@ -445,9 +445,9 @@ Internet-Draft               received realm                         2015
 
 
 
-Holmberg & Jiang        Expires November 21, 2016               [Page 8]
+Holmberg & Jiang        Expires November 26, 2016               [Page 8]
 
-Internet-Draft               received realm                         2015
+Internet-Draft               received realm                     May 2016
 
 
    o  Change Controller: IESG
@@ -501,9 +501,9 @@ Internet-Draft               received realm                         2015
 
 
 
-Holmberg & Jiang        Expires November 21, 2016               [Page 9]
+Holmberg & Jiang        Expires November 26, 2016               [Page 9]
 
-Internet-Draft               received realm                         2015
+Internet-Draft               received realm                     May 2016
 
 
    A SIP entity MUST NOT use the adjacent network information if the
@@ -557,9 +557,9 @@ Internet-Draft               received realm                         2015
 
 
 
-Holmberg & Jiang        Expires November 21, 2016              [Page 10]
+Holmberg & Jiang        Expires November 26, 2016              [Page 10]
 
-Internet-Draft               received realm                         2015
+Internet-Draft               received realm                     May 2016
 
 
 12.  References
@@ -613,9 +613,9 @@ Authors' Addresses
 
 
 
-Holmberg & Jiang        Expires November 21, 2016              [Page 11]
+Holmberg & Jiang        Expires November 26, 2016              [Page 11]
 
-Internet-Draft               received realm                         2015
+Internet-Draft               received realm                     May 2016
 
 
    Yi Jiang
@@ -669,4 +669,4 @@ Internet-Draft               received realm                         2015
 
 
 
-Holmberg & Jiang        Expires November 21, 2016              [Page 12]
+Holmberg & Jiang        Expires November 26, 2016              [Page 12]
