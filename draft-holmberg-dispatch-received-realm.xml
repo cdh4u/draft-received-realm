@@ -4,7 +4,7 @@
 <?rfc toc="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc sortrefs="no" ?>
-<rfc ipr="trust200902" category="std" docName="draft-holmberg-dispatch-received-realm-02.txt" submissionType="IETF" xml:lang="en">
+<rfc ipr="trust200902" category="std" docName="draft-holmberg-dispatch-received-realm-03.txt" submissionType="IETF" xml:lang="en">
 	<front>
 		<title abbrev="received realm">
 			Via header field parameter to indicate received realm
@@ -165,27 +165,38 @@
 				information generated within the IP Multimedia Subsystem (IMS).
 			</t>
 			<t>
-				JWT: JSON Web Token, as defined in RFC 7519.
+				JWS: JSON Web Signature, as defined in RFC 7515.
 			</t>
 		</section>
 
 		<section title="Vie 'received-realm' header field parameter" anchor="sec-via" toc="default">
 			<section title="General" anchor="sec-via-gen">
         <t>
-						The Via 'received-realm' header field parameter value is represented as a JSON Web Token (JTW)
-						<xref target="RFC7519" pageno="false" format="default"/>. The JWT payload contains
-						SIP header filed values, and the value representing the adjacent network.
+						The Via 'received-realm' header field parameter value is represented as a
+						combination of an operator identyfier, which value represents the adjacent
+						network, and a serialized JSON Web Signature (JWS) <xref target="RFC7515" pageno="false" format="default"/>.
+						The JWS Payload consists of the operator identifier and other SIP information element values.
 				</t>
 				<t>
-						The procedures for encoding the JWT and calculating the signature are defined in
-						<xref target="RFC7519" pageno="false" format="default"/>.
+						The procedures for encoding the JWS and calculating the signature are defined in
+						<xref target="RFC7515" pageno="false" format="default"/>. As the JWS Payload
+						information is found in other SIP information elements the JWS payload is not included
+						in the serialized JWS conveyed in the header field parameter, as described in Appendix F of
+						<xref target="RFC7515" pageno="false" format="default"/>. The operator identifier and
+						the serialized JWS are separated using a comma character.
 				</t>
 			</section>
-			<section title="Header" anchor="sec-via-header">
-					<t>The following header parameters MUST be included in the JWT.
+			<section title="Operator Identifier" anchor="sec-via-ope">
+        <t>
+					The Operator Identifier is a token value that represents the adjacent operator. The
+					scope of the value is only within the network that inserts the value.
+        </t>
+			</section>
+			<section title="JWS Header" anchor="sec-via-header">
+					<t>The following header parameters MUST be included in the JWS.
 							<list style="symbols">
 									<t>The "typ" parameter MUST have a "JWT" value.</t>
-									<t>The "alg" parameter MUST have the value of the algorithm used to calculate the JWT signature.</t>
+									<t>The "alg" parameter MUST have the value of the algorithm used to calculate the JWS.</t>
 							</list>
 					</t>
 					<t>
@@ -204,17 +215,28 @@ Example:
 			    ]]></artwork>
 	        </figure>
 				</section>
-				<section title="Payload claims" anchor="sec-via-payload">
-					<t>The follwoing payload claims MUST be included in the JWT.
+				<section title="JWS Payload" anchor="sec-via-payload">
+					<t>The followoing claims MUST be included in the JWS Payload.
 						<list style="symbols">
-            <t> The "adjacent_network" claim has the value representing the adjacent network.</t>
 						<t> The "sip_from_tag" claim has the value of the From 'tag' header field parameter of the SIP message.</t>
-						<t> The "sip_date" claim has the value of the Date header field in the SIP message.</t>
+						<t> The "sip_date" claim has the value of the Date header field in the SIP message,
+							quoted and encoded in JSON NumbericData format <xref target="RFC7519" pageno="false" format="default"/>.</t>
 						<t> The "sip_callid" claim has have value of the Call-ID header field in the SIP message.</t>
 						<t> The "sip_cseq_num" claim has the numeric value of the CSeq header field in the SIP message.</t>
 						<t> the "sip_via_branch" claim has value of the Via branch header field parameter of the Via header
-					  field, in the SIP message, to which the received-realm header parameter is attached.</t>
+					  field, in the SIP message, to which the received-realm header field parameter is attached.</t>
 					  </list>
+					</t>
+					<t>
+            All claims MUST be encoded using lower case characters.
+					</t>
+					<t>
+						All claims except "sip_date" MUST be encoded as StringOrURI JSON string value
+						<xref target="RFC7519" pageno="false" format="default"/>.
+					</t>
+					<t>
+						The sip_date claim MUST be encoded as a JSON NumericData value
+						<xref target="RFC7519" pageno="false" format="default"/>
 					</t>
 					<figure>
 			    <artwork align="left" alt="" height="" name="" type="" width="" xml:space="preserve"><![CDATA[
@@ -222,9 +244,8 @@ Example:
 Example:
 
 {
-	"adjacent_network":"operator_1.com",
 	"sip_from_tag":"1928301774",
-	"sip_date":"Fri, 20 May 2016 06:41:47 GMT",
+	"sip_date":"1472815523",
 	"sip_callid":"a84b4c76e66710@pc33.atlanta.com",
 	"sip_cseq_num":"314159",
 	"sip_via_branch":"z9hG4bK776asdhds"
@@ -250,15 +271,33 @@ Example:
 						<preamble></preamble>
 						<artwork><![CDATA[
 	via-params     =/ received-realm
-	received-realm = "received-realm" EQUAL jwt
-	jtw            = LDQUOT header "." payload "." signature RDQUOT
+	received-realm = "received-realm" EQUAL operator-id COLON jws
+	operator-id    = token
+	jws            = LDQUOT header "." "." signature RDQUOT
 	header         = *base64-char
-	payload        = *base64-char
 	signature      = *base64-char
 	base64-char    = ALPHA / DIGIT / "/" / "+"
+
+  EQUAL, COLON, token, LDQUOT, RDQUOT, ALPHA and DIGIT
+	as defined in RFC 3261.
+
 						]]></artwork>
 					</figure>
 				</section>
+			</section>
+			<section title="Example" anchor="sec-example" toc="default">
+				<figure>
+					<preamble></preamble>
+					<artwork><![CDATA[
+
+  Via: SIP/2.0/UDP pc33.atlanta.com;branch=z9hG4bK776;
+  received-realm=myoperator:"eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1N..
+	dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk"
+
+  NOTE: Line breaks for display purpose only
+
+					]]></artwork>
+				</figure>
 			</section>
 		</section>
 
@@ -292,12 +331,10 @@ Example:
 			<section title="Behavior of a SIP entity consuming the received-network value" anchor="sec-sipent-cons" toc="default">
 				<t>
 					When a SIP entity receives a Via 'received-network' header field parameter, and intends to perform actions
-					based on the header field parameter value, it MUST first check whether the values of the JWT claims
-					representing SIP header field values match the associated SIP header field values within the SIP request.
-					If the values of the JWT claims representing SIP header field values do not match the values of the
-					associated SIP header field values the SIP entity MUST discard the adjacent network information present
-					in the JWT. The SIP entity MAY take also take additional actions (e.g. rejecting the SIP request) based on
-					local policy.
+					based on the header field parameter value, it MUST first re-calculate the JWS and check whether the result
+					matches the JWS received. If there is not a match the SIP entity MUST discard the received 'received-network'
+					header field parameter. The SIP entity MAY take also take additional actions (e.g. rejecting the SIP request)
+					based on local policy.
 				</t>
 			</section>
 		</section>
@@ -310,17 +347,23 @@ Example:
 Operator 1    T_EP                                 T_AS
 
 - INVITE ------>
-  Via: IP_UA
-                - INVITE ---------------------------->
-                  Via: IP_TEP; received-realm="eyJhbG.eyJpc3.03f329"
-				          Via: IP_UA; received=IP_UA
+  Via: SIP/2.0/UDP IP_UA
+                -- INVITE ---------------------------->
+                   Via: SIP/2.0/UDP IP_TEP;branch=z9hG4bK776;
+                    received-realm=myoperator:"eyJ0eXAiOiJKV1QiLA0KICJh
+                    bGciOiJIUzI1N..dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW
+                    1gFWFOEjXk"
+                   Via: SIP/2.0/UDP IP_UA; received=IP_UA
 
                 <- 200 OK ----------------------------
-                   Via: IP_TEP; received-realm="eyJhbG.eyJpc3.03f329"
-                   Via: IP_UA; received=IP_UA
+                   Via: SIP/2.0/UDP IP_TEP;branch=z9hG4bK776;
+                    received-realm=myoperator:"eyJ0eXAiOiJKV1QiLA0KICJh
+                    bGciOiJIUzI1N..dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW
+                    1gFWFOEjXk"
+                   Via: SIP/2.0/UDP IP_UA; received=IP_UA
 
 <- 200 OK------
-   Via: IP_UA; received=IP_UA
+   Via: SIP/2.0/UDP IP_UA; received=IP_UA
 
 				]]></artwork>
 			</figure>
@@ -351,29 +394,25 @@ Via                     received-realm         No          RFCXXXX
 					This specification defines new JSON Web Token claims in
 					the "JSON Web Token Claims" sub-registry as per the registry
 					created by <xref target="RFC7519" pageno="false" format="default"/>.
-					<list style="symbols">
-					 <t> Claim Name: "adjacent_network"</t>
-					 <t> Claim Descritpoin: Adjacent network from where a SIP request is received</t>
-					 <t> Change Controller: IESG</t>
-					 <t> Specification Document(s): RFC XXXX</t>
+					<list>
 					 <t> Claim Name: "sip_from_tag"</t>
-					 <t> Claim Descritpoin: SIP From tag header field parameter value</t>
+					 <t> Claim : SIP From tag header field parameter value</t>
 					 <t> Change Controller: IESG</t>
 					 <t> Specification Document(s): RFC XXXX, RFC 3261</t>
 					 <t> Claim Name: "sip_date"</t>
-					 <t> Claim Descritpoin: SIP Date header field value</t>
+					 <t> Claim Description: SIP Date header field value</t>
 					 <t> Change Controller: IESG</t>
 					 <t> Specification Document(s): RFC XXXX, RFC 3261</t>
 					 <t> Claim Name: "sip_callid"</t>
-					 <t> Claim Descritpoin: SIP Call-Id header field value</t>
+					 <t> Claim Description: SIP Call-Id header field value</t>
 					 <t> Change Controller: IESG</t>
 					 <t> Specification Document(s): RFC XXXX, RFC 3261</t>
 					 <t> Claim Name: "sip_cseq_num"</t>
-					 <t> Claim Descritpoin: SIP CSeq numeric header field parameter value</t>
+					 <t> Claim Description: SIP CSeq numeric header field parameter value</t>
 					 <t> Change Controller: IESG</t>
 					 <t> Specification Document(s): RFC XXXX, RFC 3261</t>
 					 <t> Claim Name: "sip_via_branch"</t>
-					 <t> Claim Descritpoin: SIP Via branch header field parameter value</t>
+					 <t> Claim Description: SIP Via branch header field parameter value</t>
 					 <t> Change Controller: IESG</t>
 					 <t> Specification Document(s): RFC XXXX, RFC 3261</t>
 					</list>
@@ -390,18 +429,22 @@ Via                     received-realm         No          RFCXXXX
 			<t>
 				The operator MUST change the key on a frequent basis.
 				The operator also needs to take great care in ensuring that the key used
-				to calculate the JWT signature value is only known by the network entry
+				to calculate the JWS signature value is only known by the network entry
 				point adding the received-realm Via header field parameter to a SIP message
 				and the entities that use the parameter value.
 			</t>
 			<t>
-				A SIP entity MUST NOT use the adjacent network information if the
-				values of the JWT claims representing SIP header field values do not
-				match the values of the associated SIP header field values.
+				A SIP entity MUST NOT use the adjacent network information if
+				there is a mismatch between the JWS value received in the SIP header
+				field and the JWS calculated by the receiving entity.
 			</t>
 			<t>
 				A SIP entity MUST use different key values for each parameter value
 				that it recognizes and use to trigger actions.
+			</t>
+			<t>
+				Generic security considerations for JWS are defined in
+				<xref target="RFC7515" pageno="false" format="default"/>.
 			</t>
 	</section>
 
@@ -414,6 +457,13 @@ Via                     received-realm         No          RFCXXXX
 
 	<section title="Change Log">
 			<t>[RFC EDITOR NOTE: Please remove this section when publishing]</t>
+			<t>
+				Changes from draft-holmberg-dispatch-received-realm-02
+				<list style="symbols">
+					<t>JWT replaced with JWS.</t>
+					<t>Appendix F of RFC 7515 applied.</t>
+				</list>
+			</t>
 			<t>
 				Changes from draft-holmberg-dispatch-received-realm-01
 				<list style="symbols">
@@ -464,6 +514,7 @@ Via                     received-realm         No          RFCXXXX
 			<?rfc include="reference.RFC.2119"?>
 			<?rfc include="reference.RFC.3261"?>
 			<?rfc include="reference.RFC.5234"?>
+			<?rfc include="reference.RFC.7515"?>
 			<?rfc include="reference.RFC.7519"?>
 		</references>
 		<references title="Informative References">
