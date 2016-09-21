@@ -4,7 +4,7 @@
 <?rfc toc="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc sortrefs="no" ?>
-<rfc ipr="trust200902" category="std" docName="draft-holmberg-dispatch-received-realm-03.txt" submissionType="IETF" xml:lang="en">
+<rfc ipr="trust200902" category="std" docName="draft-holmberg-dispatch-received-realm-04.txt" submissionType="IETF" xml:lang="en">
 	<front>
 		<title abbrev="received realm">
 			Via header field parameter to indicate received realm
@@ -271,9 +271,9 @@ Example:
 						<preamble></preamble>
 						<artwork><![CDATA[
 	via-params     =/ received-realm
-	received-realm = "received-realm" EQUAL operator-id COLON jws
-	operator-id    = token
-	jws            = LDQUOT header "." "." signature RDQUOT
+	received-realm = "received-realm" EQUAL LDQUOT op-id COLON jws RDQUOT
+	op-id          = token
+	jws            = header "." "." signature
 	header         = *base64-char
 	signature      = *base64-char
 	base64-char    = ALPHA / DIGIT / "/" / "+"
@@ -457,6 +457,12 @@ Via                     received-realm         No          RFCXXXX
 
 	<section title="Change Log">
 			<t>[RFC EDITOR NOTE: Please remove this section when publishing]</t>
+			<t>
+				Changes from draft-holmberg-dispatch-received-realm-03
+				<list style="symbols">
+					<t>ABNF correction.</t>
+				</list>
+			</t>
 			<t>
 				Changes from draft-holmberg-dispatch-received-realm-02
 				<list style="symbols">
