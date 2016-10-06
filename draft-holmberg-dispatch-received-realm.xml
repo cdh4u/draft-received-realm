@@ -4,7 +4,7 @@
 <?rfc toc="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc sortrefs="no" ?>
-<rfc ipr="trust200902" category="std" docName="draft-holmberg-dispatch-received-realm-04.txt" submissionType="IETF" xml:lang="en">
+<rfc ipr="trust200902" category="std" docName="draft-holmberg-dispatch-received-realm-05.txt" submissionType="IETF" xml:lang="en">
 	<front>
 		<title abbrev="received realm">
 			Via header field parameter to indicate received realm
@@ -216,27 +216,16 @@ Example:
 	        </figure>
 				</section>
 				<section title="JWS Payload" anchor="sec-via-payload">
-					<t>The followoing claims MUST be included in the JWS Payload.
+					<t>The followoing claims MUST be included in the JWS Payload:
 						<list style="symbols">
 						<t> The "sip_from_tag" claim has the value of the From 'tag' header field parameter of the SIP message.</t>
 						<t> The "sip_date" claim has the value of the Date header field in the SIP message,
-							quoted and encoded in JSON NumbericData format <xref target="RFC7519" pageno="false" format="default"/>.</t>
+							quoted and encoded in JSON NumericDate format <xref target="RFC7519" pageno="false" format="default"/>.</t>
 						<t> The "sip_callid" claim has have value of the Call-ID header field in the SIP message.</t>
 						<t> The "sip_cseq_num" claim has the numeric value of the CSeq header field in the SIP message.</t>
 						<t> the "sip_via_branch" claim has value of the Via branch header field parameter of the Via header
 					  field, in the SIP message, to which the received-realm header field parameter is attached.</t>
 					  </list>
-					</t>
-					<t>
-            All claims MUST be encoded using lower case characters.
-					</t>
-					<t>
-						All claims except "sip_date" MUST be encoded as StringOrURI JSON string value
-						<xref target="RFC7519" pageno="false" format="default"/>.
-					</t>
-					<t>
-						The sip_date claim MUST be encoded as a JSON NumericData value
-						<xref target="RFC7519" pageno="false" format="default"/>
 					</t>
 					<figure>
 			    <artwork align="left" alt="" height="" name="" type="" width="" xml:space="preserve"><![CDATA[
@@ -254,6 +243,42 @@ Example:
 			    ]]></artwork>
 	        </figure>
 			</section>
+
+      <section title="JWS Serialization" anchor="sec-via-serialization">
+				<t>
+				  As the JWS Payload is not carried in the received-realm parameter,
+			    in order to make sure that the sender and the receiver construct the
+			    JWS Payload object in the same way, the JSON representation of the
+			    JWS Payload object it MUST be computed as follows:
+          <list style="symbols">
+           <t>All claims MUST be encoded using lower case characters.</t>
+           <t>The claims MUST be in the same order as listed in
+					 [<xref target="sec-via-payload" pageno="false" format="default"/>].</t>
+           <t>All claims except "sip_date" MUST be encoded as StringOrURI JSON
+			     string value <xref target="RFC7519" pageno="false" format="default"/>.</t>
+			     <t>The "sip_date" claim MUST be encoded as a JSON NumericDate value
+			     <xref target="RFC7519" pageno="false" format="default"/>.</t>
+			     <t>The JWS Payload MUST follow the rules for the construction of the
+			     thumbprint of a JSON Web Key (JWK) as defined in
+					 <xref target="RFC7638" pageno="false" format="default"/> Section 3
+			     Step 1 only.</t>
+				  </list>
+			  </t>
+				<figure>
+				<artwork align="left" alt="" height="" name="" type="" width="" xml:space="preserve"><![CDATA[
+
+Example:
+
+(Line breaks used for display purposes only)
+
+{"sip_from_tag":"1928301774","sip_date":"1472815523",
+"sip_callid":"a84b4c76e66710@pc33.atlanta.com","sip_cseq_num":"314159",
+"sip_via_branch":"z9hG4bK776asdhds"}
+
+				]]></artwork>
+				</figure>
+			</section>
+
 			<section title="Syntax" anchor="sec-syntax" toc="default">
 				<section title="General" anchor="sec-syntax-gen" toc="default">
 					<t>
@@ -458,6 +483,12 @@ Via                     received-realm         No          RFCXXXX
 	<section title="Change Log">
 			<t>[RFC EDITOR NOTE: Please remove this section when publishing]</t>
 			<t>
+				Changes from draft-holmberg-dispatch-received-realm-04
+				<list style="symbols">
+					<t>JSON serialization procedure added.</t>
+				</list>
+			</t>
+			<t>
 				Changes from draft-holmberg-dispatch-received-realm-03
 				<list style="symbols">
 					<t>ABNF correction.</t>
@@ -522,6 +553,7 @@ Via                     received-realm         No          RFCXXXX
 			<?rfc include="reference.RFC.5234"?>
 			<?rfc include="reference.RFC.7515"?>
 			<?rfc include="reference.RFC.7519"?>
+			<?rfc include="reference.RFC.7638"?>
 		</references>
 		<references title="Informative References">
 			<?rfc include="reference.RFC.2104"?>
