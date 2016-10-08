@@ -4,7 +4,7 @@
 <?rfc toc="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc sortrefs="no" ?>
-<rfc ipr="trust200902" category="std" docName="draft-holmberg-dispatch-received-realm-05.txt" submissionType="IETF" xml:lang="en">
+<rfc ipr="trust200902" category="std" docName="draft-holmberg-dispatch-received-realm-06.txt" submissionType="IETF" xml:lang="en">
 	<front>
 		<title abbrev="received realm">
 			Via header field parameter to indicate received realm
@@ -59,7 +59,7 @@
 					(or enterprise), the SIP requests might traverse transit network.
 				</t>
 				<t>
-					Such transit networks might provide different kind of services. In order
+					Such transit networks might provide different kinds of services. In order
 					to do that, a transit network often needs to know to which operator
 					(or enterprise) the adjacent upstream network, from which the SIP session
 					initiation request is received, belongs.
@@ -77,12 +77,13 @@
 					defined for enterprise networks.
 				</t>
 				<t>
-					The following sections describe use-case where the information is needed.
+					The following sections describe use-cases where the information is needed.
 				</t>
 			</section>
 			<section title="Use-Case: Transit Network Application Services" toc="default">
 				<t>
-					The 3rd Generation Partnership Project (3GPP) TS 23.228 specifies how an IP Multimedia Subsystem (IMS)
+					The 3rd Generation Partnership Project (3GPP) TS 23.228 <xref target="TS.3GPP.23.228"
+					pageno="false" format="default"/> specifies how an IP Multimedia Subsystem (IMS)
 					network can be used to provide transit functionality. An operator can use its IMS
 					network to provide transit functionality e.g. to non-IMS customers, to enterprise
 					networks, and to other network operators.
@@ -90,20 +91,20 @@
 				<t>
 					The transit network operator can provide application services to the networks
 					for which it is providing transit functionality. Transit application services are
-					typically not provided per user basis, as the transit network does not have access
+					typically not provided on a per user basis, as the transit network does not have access
 					to the user profiles of the networks for which the application services are provided.
 					Instead, the application services are provided per served network.
 				</t>
 				<t>
 					When a SIP entity that provides application services (e.g. an Application Server)
 					within a transit network receives a SIP request, in order to apply the correct
-					services it needs to know the adjacent upstream network from which the SIP request
+					services, it needs to know the adjacent upstream network from which the SIP request
 					is received.
 				</t>
 			</section>
 			<section title="Use-Case: Transit Network Routing" toc="default">
 				<t>
-					A transit network operator normally interconnects to many diferent
+					A transit network operator normally interconnects to many different
    					operators, including other transit network operators, and provides
    					transit routing of SIP requests received from one operator network
    					towards the destination. The destination can be within an operator network
@@ -112,9 +113,9 @@
    					interconnected transit operators.
 				</t>
 				<t>
-   					For each customer, i.e. interconnected network operator for which,
+   					For each customer, i.e., interconnected network operator, for which
    					the transit network operator routes SIP requests towards the
-   					requested destination a set of transit routing polices are defined.
+   					requested destination, a set of transit routing polices are defined.
    					These policies are used to determine how a SIP request shall be routed
    					towards the requested destination to meet the agreement the transit
    					network operator has with its customer.
@@ -165,25 +166,25 @@
 				information generated within the IP Multimedia Subsystem (IMS).
 			</t>
 			<t>
-				JWS: JSON Web Signature, as defined in RFC 7515.
+				JWS: JSON Web Signature, as defined in <xref target="RFC7515" pageno="false" format="default"/>.
 			</t>
 		</section>
 
-		<section title="Vie 'received-realm' header field parameter" anchor="sec-via" toc="default">
+		<section title="Via 'received-realm' header field parameter" anchor="sec-via" toc="default">
 			<section title="General" anchor="sec-via-gen">
         <t>
 						The Via 'received-realm' header field parameter value is represented as a
-						combination of an operator identyfier, which value represents the adjacent
+						combination of an operator identifier, whose value represents the adjacent
 						network, and a serialized JSON Web Signature (JWS) <xref target="RFC7515" pageno="false" format="default"/>.
 						The JWS Payload consists of the operator identifier and other SIP information element values.
 				</t>
 				<t>
 						The procedures for encoding the JWS and calculating the signature are defined in
 						<xref target="RFC7515" pageno="false" format="default"/>. As the JWS Payload
-						information is found in other SIP information elements the JWS payload is not included
+						information is found in other SIP information elements, the JWS payload is not included
 						in the serialized JWS conveyed in the header field parameter, as described in Appendix F of
 						<xref target="RFC7515" pageno="false" format="default"/>. The operator identifier and
-						the serialized JWS are separated using a comma character.
+						the serialized JWS are separated using a colon character.
 				</t>
 			</section>
 			<section title="Operator Identifier" anchor="sec-via-ope">
@@ -216,7 +217,7 @@ Example:
 	        </figure>
 				</section>
 				<section title="JWS Payload" anchor="sec-via-payload">
-					<t>The followoing claims MUST be included in the JWS Payload:
+					<t>The following claims MUST be included in the JWS Payload:
 						<list style="symbols">
 						<t> The "sip_from_tag" claim has the value of the From 'tag' header field parameter of the SIP message.</t>
 						<t> The "sip_date" claim has the value of the Date header field in the SIP message,
@@ -269,7 +270,7 @@ Example:
 
 Example:
 
-(Line breaks used for display purposes only)
+NOTE: Line breaks for display purpose only
 
 {"sip_from_tag":"1928301774","sip_date":"1472815523",
 "sip_callid":"a84b4c76e66710@pc33.atlanta.com","sip_cseq_num":"314159",
@@ -296,15 +297,15 @@ Example:
 						<preamble></preamble>
 						<artwork><![CDATA[
 	via-params     =/ received-realm
-	received-realm = "received-realm" EQUAL LDQUOT op-id COLON jws RDQUOT
+  received-realm = "received-realm" EQUAL LDQUOT op-id COLON jws RDQUOT
 	op-id          = token
-	jws            = header "." "." signature
+	jws            = header ".." signature
 	header         = *base64-char
 	signature      = *base64-char
 	base64-char    = ALPHA / DIGIT / "/" / "+"
 
   EQUAL, COLON, token, LDQUOT, RDQUOT, ALPHA and DIGIT
-	as defined in RFC 3261.
+	as defined in [RFC3261].
 
 						]]></artwork>
 					</figure>
@@ -315,9 +316,9 @@ Example:
 					<preamble></preamble>
 					<artwork><![CDATA[
 
-  Via: SIP/2.0/UDP pc33.atlanta.com;branch=z9hG4bK776;
-  received-realm=myoperator:"eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1N..
-	dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk"
+  Via: SIP/2.0/UDP pc33.example.com;branch=z9hG4bK776;
+  received-realm="myoperator:eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1N..
+  dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk"
 
   NOTE: Line breaks for display purpose only
 
@@ -349,15 +350,12 @@ Example:
 					from the parameter value, using a secret key which is shared between the SIP entity and any SIP entity which
 					will use the parameter value. The HMAC is then added to the parameter.
 				</t>
-				<t>
-					When the receiver decodes the JWT, it MUST compare the JWT claims with the corresponding SIP header field information. If there is a mismatch, the receiver MUST discard the received-realm header field parameter.
-        </t>
 			</section>
 			<section title="Behavior of a SIP entity consuming the received-network value" anchor="sec-sipent-cons" toc="default">
 				<t>
 					When a SIP entity receives a Via 'received-network' header field parameter, and intends to perform actions
 					based on the header field parameter value, it MUST first re-calculate the JWS and check whether the result
-					matches the JWS received. If there is not a match the SIP entity MUST discard the received 'received-network'
+					matches the JWS received. If there is not a match, the SIP entity MUST discard the received 'received-network'
 					header field parameter. The SIP entity MAY take also take additional actions (e.g. rejecting the SIP request)
 					based on local policy.
 				</t>
@@ -375,14 +373,14 @@ Operator 1    T_EP                                 T_AS
   Via: SIP/2.0/UDP IP_UA
                 -- INVITE ---------------------------->
                    Via: SIP/2.0/UDP IP_TEP;branch=z9hG4bK776;
-                    received-realm=myoperator:"eyJ0eXAiOiJKV1QiLA0KICJh
+                    received-realm="myoperator:eyJ0eXAiOiJKV1QiLA0KICJh
                     bGciOiJIUzI1N..dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW
                     1gFWFOEjXk"
                    Via: SIP/2.0/UDP IP_UA; received=IP_UA
 
                 <- 200 OK ----------------------------
                    Via: SIP/2.0/UDP IP_TEP;branch=z9hG4bK776;
-                    received-realm=myoperator:"eyJ0eXAiOiJKV1QiLA0KICJh
+                    received-realm="myoperator:eyJ0eXAiOiJKV1QiLA0KICJh
                     bGciOiJIUzI1N..dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW
                     1gFWFOEjXk"
                    Via: SIP/2.0/UDP IP_UA; received=IP_UA
@@ -460,8 +458,8 @@ Via                     received-realm         No          RFCXXXX
 			</t>
 			<t>
 				A SIP entity MUST NOT use the adjacent network information if
-				there is a mismatch between the JWS value received in the SIP header
-				field and the JWS calculated by the receiving entity.
+				there is a mismatch between the JWS signature received in the SIP header
+				field and the JWS signature calculated by the receiving entity.
 			</t>
 			<t>
 				A SIP entity MUST use different key values for each parameter value
@@ -482,6 +480,12 @@ Via                     received-realm         No          RFCXXXX
 
 	<section title="Change Log">
 			<t>[RFC EDITOR NOTE: Please remove this section when publishing]</t>
+			<t>
+				Changes from draft-holmberg-dispatch-received-realm-05
+				<list style="symbols">
+					<t>Editorial fixes.</t>
+				</list>
+			</t>
 			<t>
 				Changes from draft-holmberg-dispatch-received-realm-04
 				<list style="symbols">
@@ -558,6 +562,17 @@ Via                     received-realm         No          RFCXXXX
 		<references title="Informative References">
 			<?rfc include="reference.RFC.2104"?>
 			<?rfc include="reference.RFC.3968"?>
+			<reference anchor="TS.3GPP.23.228">
+				<front>
+					<title>
+            IP Multimedia Subsystem (IMS); Stage 2
+					</title>
+					<author><organization>3GPP</organization></author>
+					<date year="2016" month="September" day="26"/>
+				</front>
+				<seriesInfo value="23.228 14.1.0" name="3GPP TS"/>
+				<format type="HTML" target="http://www.3gpp.org/ftp/Specs/html-info/23228.htm"/>
+			</reference>
 		</references>
 	</back>
 </rfc>
