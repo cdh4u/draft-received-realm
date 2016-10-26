@@ -4,7 +4,7 @@
 <?rfc toc="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc sortrefs="no" ?>
-<rfc ipr="trust200902" category="std" docName="draft-holmberg-dispatch-received-realm-07.txt" submissionType="IETF" xml:lang="en">
+<rfc ipr="trust200902" category="std" docName="draft-holmberg-dispatch-received-realm-08.txt" submissionType="IETF" xml:lang="en">
 	<front>
 		<title abbrev="received realm">
 			Via header field parameter to indicate received realm
@@ -324,6 +324,9 @@ NOTE: Line breaks for display purpose only
   EQUAL, COLON, token, LDQUOT, RDQUOT, ALPHA and DIGIT
 	as defined in [RFC3261].
 
+  NOTE: The two adjacent dots in the jws part is due to the detached
+  payload being replaced by an empty string [RFC7515].
+
 						]]></artwork>
 					</figure>
 				</section>
@@ -363,8 +366,8 @@ NOTE: Line breaks for display purpose only
 					part of the header field parameter, to the Via header field added to the SIP request.
 				</t>
 				<t>
-					In addition the SIP entity MUST also calculate a JWS (<xref target="sec-via-payload" pageno="false" format="default" />)
-          and add it to the Via header field parameter.
+          In addition the SIP entity MUST also calculate a JWS (<xref target="sec-via-payload" pageno="false" format="default" />)
+          and add the calculated JWS Header and JWS Signature as the jws part of the Via header field parameter.
 				</t>
 			</section>
 			<section title="Behavior of a SIP entity consuming the received-network value" anchor="sec-sipent-cons" toc="default">
@@ -496,6 +499,12 @@ Via                     received-realm         No          RFCXXXX
 
 	<section title="Change Log">
 			<t>[RFC EDITOR NOTE: Please remove this section when publishing]</t>
+			<t>
+				Changes from draft-holmberg-dispatch-received-realm-07
+				<list style="symbols">
+					<t>Editorial changes.</t>
+				</list>
+			</t>
 			<t>
 				Changes from draft-holmberg-dispatch-received-realm-06
 				<list style="symbols">
