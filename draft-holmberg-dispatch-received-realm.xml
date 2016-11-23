@@ -7,7 +7,7 @@
 <rfc ipr="trust200902" category="std" docName="draft-holmberg-dispatch-received-realm-09.txt" submissionType="IETF" xml:lang="en">
 	<front>
 		<title abbrev="received realm">
-			Via header field parameter to indicate received realm
+			Session Initiation Protocol (SIP) Via header field parameter to indicate received realm
 		</title>
 		<author initials="C.H." surname="Holmberg" fullname="Christer Holmberg">
 			<organization>Ericsson</organization>
@@ -54,15 +54,17 @@
 		<section title="Introduction" toc="default">
 			<section title="General" toc="default">
 				<t>
-					When SIP sessions are established between networks belonging to different
+          When Session Initiation Protocol (SIP) <xref target="RFC3261" pageno="false" format="default"/>
+          sessions are established between networks belonging to different
 					operators, or between interconnected networks belonging to the same operator
-					(or enterprise), the SIP requests might traverse transit network.
+					(or enterprise), the SIP requests associated with the session might
+          traverse transit networks.
 				</t>
 				<t>
 					Such transit networks might provide different kinds of services. In order
-					to do that, a transit network often needs to know to which operator
-					(or enterprise) the adjacent upstream network, from which the SIP session
-					initiation request is received, belongs.
+					to provide such services, a transit network often needs to know to which operator
+					(or enterprise) the adjacent upstream network from which the SIP session
+					initiation request is received belongs.
 				</t>
 				<t>
 					This specification defines a new Session Initiation Protocol (SIP)
@@ -85,7 +87,7 @@
 					The 3rd Generation Partnership Project (3GPP) TS 23.228 <xref target="TS.3GPP.23.228"
 					pageno="false" format="default"/> specifies how an IP Multimedia Subsystem (IMS)
 					network can be used to provide transit functionality. An operator can use its IMS
-					network to provide transit functionality e.g. to non-IMS customers, to enterprise
+					network to provide transit functionality e.g., to non-IMS customers, to enterprise
 					networks, and to other network operators.
 				</t>
 				<t>
@@ -96,7 +98,7 @@
 					Instead, the application services are provided per served network.
 				</t>
 				<t>
-					When a SIP entity that provides application services (e.g. an Application Server)
+					When a SIP entity that provides application services (e.g., an Application Server)
 					within a transit network receives a SIP request, in order to apply the correct
 					services, it needs to know the adjacent upstream network from which the SIP request
 					is received.
@@ -124,7 +126,7 @@
    					When a SIP entity that performs the transit routing functionality
    					receives a SIP request, in order to apply the correct set of transit
    					routing policies, it needs to know from which of its
-   					customers, i.e. adjacent upstream network, the SIP request is
+   					customers, i.e., adjacent upstream network, the SIP request is
    					received.
 				</t>
 			</section>
@@ -138,7 +140,7 @@
 			<t>
 				The mechanism for verifying from which adjacent upstream network a SIP request is
 				received is outside the scope of this specification. Such mechanism might be
-				based e.g., on receiving the SIP request on an authenticated Virtual Private
+				based for instance on receiving the SIP request on an authenticated Virtual Private
 				Network (VPN), receiving the SIP request on a specific IP address, or on a specific
 				network access.
 			</t>
@@ -213,7 +215,7 @@
 						NOTE: The "alg" parameter values for specific algorithms are listed in the IANA JSON Web Signature
 						and Encryption Algorithms sub-registry of the JSON Object Signing and Encryption (JOSE) registry.
 						Operators need to use algorithms for which an associated "alg" parameter value has been
-						registered. The proceudres for defining new values are defined in <xref target="RFC7518" pageno="false"
+						registered. The procedures for defining new values are defined in <xref target="RFC7518" pageno="false"
 						format="default"/>.
 					</t>
 					<figure>
@@ -313,16 +315,16 @@ NOTE: Line breaks for display purpose only
 					<figure>
 						<preamble></preamble>
 						<artwork><![CDATA[
-	via-params     =/ received-realm
+  via-params     =/ received-realm
   received-realm = "received-realm" EQUAL LDQUOT op-id COLON jws RDQUOT
-	op-id          = token
-	jws            = header ".." signature
-	header         = *base64-char
-	signature      = *base64-char
-	base64-char    = ALPHA / DIGIT / "/" / "+"
+  op-id          = token
+  jws            = header ".." signature
+  header         = *base64-char
+  signature      = *base64-char
+  base64-char    = ALPHA / DIGIT / "/" / "+"
 
   EQUAL, COLON, token, LDQUOT, RDQUOT, ALPHA and DIGIT
-	as defined in [RFC3261].
+  as defined in [RFC3261].
 
   NOTE: The two adjacent dots in the jws part is due to the detached
   payload being replaced by an empty string [RFC7515].
@@ -358,7 +360,7 @@ NOTE: Line breaks for display purpose only
 			<section title="Behavior of a SIP entity acting as a network entry point" anchor="sec-sipent-recv" toc="default">
 				<t>
 					When a SIP entity, acting as a network entry point, forwards a SIP request, or initiates a SIP request
-					on its own (e.g. a PSTN gateway), the SIP entity adds a Via header field to the SIP request, according
+					on its own (e.g., a PSTN gateway), the SIP entity adds a Via header field to the SIP request, according
 					to the procedures in RFC 3261 <xref target="RFC3261" pageno="false" format="default" />. In addition, if
 					the SIP entity is able to assert the adjacent upstream network, and if the SIP entity is aware of a network
 					realm value defined for that network, the SIP entity can add a "received-realm" Via header field parameter,
@@ -375,7 +377,7 @@ NOTE: Line breaks for display purpose only
 					When a SIP entity receives a Via 'received-network' header field parameter, and intends to perform actions
 					based on the header field parameter value, it MUST first re-calculate the JWS and check whether the result
 					matches the JWS received. If there is not a match, the SIP entity MUST discard the received 'received-network'
-					header field parameter. The SIP entity MAY take also take additional actions (e.g. rejecting the SIP request)
+					header field parameter. The SIP entity MAY take also take additional actions (e.g., rejecting the SIP request)
 					based on local policy.
 				</t>
 			</section>
@@ -490,10 +492,11 @@ Via                     received-realm         No          RFCXXXX
 			</t>
 	</section>
 
-	<section title="Acknowledgements" anchor="sec-acks" toc="default">
+	<section title="Acknowledgments" anchor="sec-acks" toc="default">
 			<t>
 				Thanks to Adam Roach and Richard Barnes for providing comments and
-				feedback on the document.
+				feedback on the document. Francis Dupoint performed the Gen-ART
+				review.
 			</t>
 	</section>
 
@@ -502,6 +505,7 @@ Via                     received-realm         No          RFCXXXX
 			<t>
 				Changes from draft-holmberg-dispatch-received-realm-08
 				<list style="symbols">
+					<t>Editorial fixed based on Gen-ART review.</t>
 					<t>Editorial fixes based on comments from IANA Service Operator review.</t>
 					<t>- Quotes removed from sip_date value.</t>
 				</list>
