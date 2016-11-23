@@ -4,7 +4,7 @@
 <?rfc toc="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc sortrefs="no" ?>
-<rfc ipr="trust200902" category="std" docName="draft-holmberg-dispatch-received-realm-09.txt" submissionType="IETF" xml:lang="en">
+<rfc ipr="trust200902" category="std" docName="draft-holmberg-dispatch-received-realm-10.txt" submissionType="IETF" xml:lang="en">
 	<front>
 		<title abbrev="received realm">
 			Session Initiation Protocol (SIP) Via header field parameter to indicate received realm
@@ -503,6 +503,12 @@ Via                     received-realm         No          RFCXXXX
 	<section title="Change Log">
 			<t>[RFC EDITOR NOTE: Please remove this section when publishing]</t>
 			<t>
+				Changes from draft-holmberg-dispatch-received-realm-09
+				<list style="symbols">
+					<t>Reference to RFC 2104 removed.</t>
+				</list>
+			</t>
+			<t>
 				Changes from draft-holmberg-dispatch-received-realm-08
 				<list style="symbols">
 					<t>Editorial fixed based on Gen-ART review.</t>
@@ -603,7 +609,6 @@ Via                     received-realm         No          RFCXXXX
 			<?rfc include="reference.RFC.7638"?>
 		</references>
 		<references title="Informative References">
-			<?rfc include="reference.RFC.2104"?>
 			<?rfc include="reference.RFC.3968"?>
       <?rfc include="reference.RFC.7518"?>
 			<reference anchor="TS.3GPP.23.228">
