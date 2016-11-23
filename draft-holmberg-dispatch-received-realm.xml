@@ -4,7 +4,7 @@
 <?rfc toc="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc sortrefs="no" ?>
-<rfc ipr="trust200902" category="std" docName="draft-holmberg-dispatch-received-realm-08.txt" submissionType="IETF" xml:lang="en">
+<rfc ipr="trust200902" category="std" docName="draft-holmberg-dispatch-received-realm-09.txt" submissionType="IETF" xml:lang="en">
 	<front>
 		<title abbrev="received realm">
 			Via header field parameter to indicate received realm
@@ -234,7 +234,7 @@ Example:
 						<list style="symbols">
 						<t> The "sip_from_tag" claim has the value of the From 'tag' header field parameter of the SIP message.</t>
 						<t> The "sip_date" claim has the value of the Date header field in the SIP message,
-							quoted and encoded in JSON NumericDate format <xref target="RFC7519" pageno="false" format="default"/>.</t>
+							encoded in JSON NumericDate format <xref target="RFC7519" pageno="false" format="default"/>.</t>
 						<t> The "sip_callid" claim has have value of the Call-ID header field in the SIP message.</t>
 						<t> The "sip_cseq_num" claim has the numeric value of the CSeq header field in the SIP message.</t>
 						<t> the "sip_via_branch" claim has value of the Via branch header field parameter of the Via header
@@ -251,7 +251,7 @@ Example:
 
 {
 	"sip_from_tag":"1928301774",
-	"sip_date":"1472815523",
+	"sip_date":1472815523,
 	"sip_callid":"a84b4c76e66710@pc33.atlanta.com",
 	"sip_cseq_num":"314159",
 	"sip_via_branch":"z9hG4bK776asdhds",
@@ -289,7 +289,7 @@ Example:
 
 NOTE: Line breaks for display purpose only
 
-{"sip_from_tag":"1928301774","sip_date":"1472815523",
+{"sip_from_tag":"1928301774","sip_date":1472815523,
 "sip_callid":"a84b4c76e66710@pc33.atlanta.com","sip_cseq_num":"314159",
 "sip_via_branch":"z9hG4bK776asdhds","sip_via_opid":"myoperator"}
 
@@ -499,6 +499,13 @@ Via                     received-realm         No          RFCXXXX
 
 	<section title="Change Log">
 			<t>[RFC EDITOR NOTE: Please remove this section when publishing]</t>
+			<t>
+				Changes from draft-holmberg-dispatch-received-realm-08
+				<list style="symbols">
+					<t>Editorial fixes based on comments from IANA Service Operator review.</t>
+					<t>- Quotes removed from sip_date value.</t>
+				</list>
+			</t>
 			<t>
 				Changes from draft-holmberg-dispatch-received-realm-07
 				<list style="symbols">
