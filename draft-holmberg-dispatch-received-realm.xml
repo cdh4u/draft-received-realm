@@ -4,7 +4,7 @@
 <?rfc toc="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc sortrefs="no" ?>
-<rfc ipr="trust200902" category="std" docName="draft-holmberg-dispatch-received-realm-10.txt" submissionType="IETF" xml:lang="en">
+<rfc ipr="trust200902" category="std" docName="draft-holmberg-dispatch-received-realm-11.txt" submissionType="IETF" xml:lang="en">
 	<front>
 		<title abbrev="received realm">
 			Session Initiation Protocol (SIP) Via header field parameter to indicate received realm
@@ -319,8 +319,8 @@ NOTE: Line breaks for display purpose only
   received-realm = "received-realm" EQUAL LDQUOT op-id COLON jws RDQUOT
   op-id          = token
   jws            = header ".." signature
-  header         = *base64-char
-  signature      = *base64-char
+  header         = 1*base64-char
+  signature      = 1*base64-char
   base64-char    = ALPHA / DIGIT / "/" / "+"
 
   EQUAL, COLON, token, LDQUOT, RDQUOT, ALPHA and DIGIT
@@ -471,20 +471,29 @@ Via                     received-realm         No          RFCXXXX
 				has not been added to the SIP message by an unauthorized SIP entity.
 			</t>
 			<t>
-				The operator MUST change the key on a frequent basis.
+        The received-realm Via header field parameter is inserted, signed,
+        verified and consumed within an operator network. The operator MUST
+        discard parameters received from another network, and the parameter
+        MUST only be inserted by SIP entities that are able to verify from
+        which adjacent upstream network a SIP request is received.
+      </t>
+			<t>
 				The operator also needs to take great care in ensuring that the key used
-				to calculate the JWS signature value is only known by the network entry
-				point adding the received-realm Via header field parameter to a SIP message
-				and the entities that use the parameter value.
+				to calculate the JWS signature value is only known by the network entities
+				signing and adding the JWS signature to the received-realm Via
+				header field parameter of a SIP message, and to network entities
+				verifying and consuming the parameter value.
 			</t>
+			<t>
+        The operator MUST use a key management policy that protects agains
+        unauthorised access to the stored keys within nodes where they keys
+        associated with the JWS signature are stored, and that protects against
+				crypto analysis attacks using captured data sent on the wire.
+      </t>
 			<t>
 				A SIP entity MUST NOT use the adjacent network information if
 				there is a mismatch between the JWS signature received in the SIP header
 				field and the JWS signature calculated by the receiving entity.
-			</t>
-			<t>
-				A SIP entity MUST use different key values for each parameter value
-				that it recognizes and use to trigger actions.
 			</t>
 			<t>
 				Generic security considerations for JWS are defined in
@@ -502,6 +511,14 @@ Via                     received-realm         No          RFCXXXX
 
 	<section title="Change Log">
 			<t>[RFC EDITOR NOTE: Please remove this section when publishing]</t>
+			<t>
+				Changes from draft-holmberg-dispatch-received-realm-10
+				<list style="symbols">
+					<t>Changes based on IESG review.</t>
+					<t>Changes based on SecDIR review.</t>
+					<t>Changes based on IANA Service Operator review.</t>
+				</list>
+			</t>
 			<t>
 				Changes from draft-holmberg-dispatch-received-realm-09
 				<list style="symbols">
