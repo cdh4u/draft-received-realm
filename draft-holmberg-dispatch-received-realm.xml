@@ -4,7 +4,7 @@
 <?rfc toc="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc sortrefs="no" ?>
-<rfc ipr="trust200902" category="std" docName="draft-holmberg-dispatch-received-realm-11.txt" submissionType="IETF" xml:lang="en">
+<rfc ipr="trust200902" category="std" docName="draft-holmberg-dispatch-received-realm-12.txt" submissionType="IETF" xml:lang="en">
 	<front>
 		<title abbrev="received realm">
 			Session Initiation Protocol (SIP) Via header field parameter to indicate received realm
@@ -186,8 +186,8 @@
 				<t>
 						The procedures for encoding the JWS and calculating the signature are defined in
 						<xref target="RFC7515" pageno="false" format="default"/>. As the JWS Payload
-						information is found in other SIP information elements, the JWS Payload is not attached
-						to the serialized JWS conveyed in the header field parameter, as described in Appendix F of
+						information is found in other SIP information elements, the JWS Payload is detached
+						from the serialized JWS conveyed in the header field parameter, as described in Appendix F of
 						<xref target="RFC7515" pageno="false" format="default"/>. The operator identifier and
 						the serialized JWS are separated using a colon character.
 				</t>
@@ -511,6 +511,12 @@ Via                     received-realm         No          RFCXXXX
 
 	<section title="Change Log">
 			<t>[RFC EDITOR NOTE: Please remove this section when publishing]</t>
+			<t>
+				Changes from draft-holmberg-dispatch-received-realm-11
+				<list style="symbols">
+					<t>Editorial change based on IESG review.</t>
+				</list>
+			</t>
 			<t>
 				Changes from draft-holmberg-dispatch-received-realm-10
 				<list style="symbols">
